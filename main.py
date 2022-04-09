@@ -52,6 +52,14 @@ def take_picture():
     return name
 
 
+def take_video(time):
+    name = time.strftime("capture/vid %Hh %Mmin %Ssec.h264")
+    camera.start_recording(name)
+    camera.wait_recording(time)
+    camera.stop_recording()
+    return name
+
+
 @bot.event
 async def on_ready():
     global firstConnection, channel, event
@@ -92,6 +100,15 @@ async def pic(ctx, *arg):
     await ctx.send(
         content="image prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
         file=discord.File(take_picture()),
+    )
+
+
+@bot.command()
+async def vid(ctx, *arg):
+    """manually take a video argument: time in second"""
+    await ctx.send(
+        content="vid prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
+        file=discord.File(take_video(int(arg[0]))),
     )
 
 
