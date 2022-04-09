@@ -55,10 +55,10 @@ def take_picture():
     return name
 
 
-def take_video(time):
+def take_video(recordTime):
     name = time.strftime("capture/vid %Hh %Mmin %Ssec.h264")
     camera.start_recording(name)
-    camera.wait_recording(time)
+    camera.wait_recording(recordTime)
     camera.stop_recording()
     return name
 
