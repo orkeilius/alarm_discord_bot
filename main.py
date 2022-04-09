@@ -118,7 +118,7 @@ async def vid(ctx, *arg):
         )
     except:
         await ctx.send(embed=makeEmbed(embedData["videoError"]))
-    message.delete()
+    await message.delete()
 
 
 @bot.command()
