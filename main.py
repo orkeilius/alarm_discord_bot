@@ -15,7 +15,10 @@ with open("template-embed.json") as file:
 with open("setting/setting.json") as file:
     setting = json.load(file)
 
-os.mkdir("capture")
+try:
+    os.mkdir("capture")
+except:
+   pass
 
 bot = commands.Bot(
     description=setting["global"]["description"],
