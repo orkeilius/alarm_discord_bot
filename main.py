@@ -3,6 +3,7 @@ from picamera import PiCamera
 from discord.ext import commands
 from discord.ext import tasks
 import gpiozero
+import os
 
 # from picamera import PiCamera
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -13,6 +14,8 @@ with open("template-embed.json") as file:
 
 with open("setting/setting.json") as file:
     setting = json.load(file)
+
+os.mkdir("capture")
 
 bot = commands.Bot(
     description=setting["global"]["description"],
