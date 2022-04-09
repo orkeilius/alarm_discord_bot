@@ -131,6 +131,6 @@ def gpioInit():
     eventLoop.start()
 
 
-with open("setting/token.json") as file:
-    shellAccess = json.load(file)["shellAccess"]
-    bot.run(json.load(file)["botToken"])
+with json.load(open("setting/token.json")) as file:
+    shellAccess = file["shellAccess"]
+    bot.run(file["botToken"])
