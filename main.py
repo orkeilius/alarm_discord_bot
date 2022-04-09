@@ -116,7 +116,7 @@ async def vid(ctx, *arg):
             file=discord.File(take_video(int(arg[0]))),
         )
     except:
-        await ctx.send(makeEmbed(embedData["videoError"]))
+        await ctx.send(embed=makeEmbed(embedData["videoError"]))
 
 
 @bot.command()
