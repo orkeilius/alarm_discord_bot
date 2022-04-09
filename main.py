@@ -11,7 +11,7 @@ import discord, json, random, time, sys, threading, asyncio
 with open("template-embed.json") as file:
     embedData = json.load(file)
 
-with open("setting.json") as file:
+with open("setting/setting.json") as file:
     setting = json.load(file)
 
 bot = commands.Bot(
@@ -131,6 +131,6 @@ def gpioInit():
     eventLoop.start()
 
 
-with open("token.json") as file:
+with open("setting/token.json") as file:
     shellAccess = json.load(file)["shellAccess"]
     bot.run(json.load(file)["botToken"])

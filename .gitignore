@@ -1,6 +1,6 @@
 # personal files
 capture/*
-token.json
+setting/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
