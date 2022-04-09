@@ -1,0 +1,21 @@
+{
+  "default": {
+    "title": "title",
+    "description": "description",
+    "color": [255, 255, 255],
+    "fields": [
+      {
+        "name": "name",
+        "description": "description",
+        "inline": false
+      }
+    ]
+  },
+
+  "start": {
+    "title": "Salut!",
+    "description": "le bot vient de demarrer",
+    "color": [0, 255, 0],
+    "fields": []
+  }
+}
