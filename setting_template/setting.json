@@ -1,0 +1,16 @@
+{
+   "global":{
+       "prefix": "!",
+       "description":"bot alarme, use !help",
+       "channel": *the channel for the bot*
+   },
+   "alarm":{
+       "ils":[
+           {
+               "name":"exemple",
+               "port":4,
+               "close": false
+           }
+       ]
+   }
+}
