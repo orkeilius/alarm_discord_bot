@@ -56,11 +56,12 @@ def take_picture():
 
 
 def take_video(recordTime):
-    name = time.strftime("capture/vid %Hh %Mmin %Ssec.h264")
-    camera.start_recording(name)
+    name = time.strftime("capture/vid %Hh %Mmin %Ssec")
+    camera.start_recording(name + ".h264")
     camera.wait_recording(recordTime)
     camera.stop_recording()
-    return name
+    os.system(f"ffmpeg -i {name}.h264 {name}.mp4")
+    return name + ".mp4"
 
 
 @bot.event
