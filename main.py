@@ -58,7 +58,7 @@ def take_picture():
 def take_video(recordTime):
     """record a video (only in h264 format because encoding are very slow on rasberry)"""
     name = time.strftime("capture//   vid %Hh %Mmin %Ssec.h264")
-    camera.start_recording(name + ".h264")
+    camera.start_recording(name)
     camera.wait_recording(recordTime)
     camera.stop_recording()
     return name
@@ -110,13 +110,13 @@ async def pic(ctx, *arg):
 @bot.command()
 async def vid(ctx, *arg):
     """manually take a video argument: time in second"""
-    try:
-        await ctx.send(
-            content="vid prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
-            file=discord.File(take_video(int(arg[0]))),
-        )
-    except:
-        await ctx.send(makeEmbed(embedData["videoError"]))
+    # try:
+    await ctx.send(
+        content="vid prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
+        file=discord.File(take_video(int(arg[0]))),
+    )
+    # except:
+    # await ctx.send(makeEmbed(embedData["videoError"]))
 
 
 @bot.command()
