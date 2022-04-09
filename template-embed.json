@@ -11,11 +11,16 @@
       }
     ]
   },
-
   "start": {
     "title": "Salut!",
     "description": "le bot vient de demarrer",
     "color": [0, 255, 0],
+    "fields": []
+  },
+  "videoError": {
+    "title": "Erreur",
+    "description": "vidéo trop grande pour discord",
+    "color": [255, 0, 0],
     "fields": []
   }
 }

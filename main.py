@@ -18,7 +18,7 @@ with open("setting/setting.json") as file:
 try:
     os.mkdir("capture")
 except:
-   pass
+    pass
 
 bot = commands.Bot(
     description=setting["global"]["description"],
@@ -52,6 +52,15 @@ def take_picture():
     name = time.strftime("capture/img %Hh %Mmin %Ssec.jpg")
     # Camera warm-up time
     camera.capture(name)
+    return name
+
+
+def take_video(recordTime):
+    """record a video (only in h264 format because encoding are very slow on rasberry)"""
+    name = time.strftime("capture//   vid %Hh %Mmin %Ssec.h264")
+    camera.start_recording(name)
+    camera.wait_recording(recordTime)
+    camera.stop_recording()
     return name
 
 
@@ -96,6 +105,20 @@ async def pic(ctx, *arg):
         content="image prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
         file=discord.File(take_picture()),
     )
+
+
+@bot.command()
+async def vid(ctx, *arg):
+    """manually take a video (only in h264 because encoding on rasberry are slow) argument: time in second"""
+    message = await ctx.send("enregistrement en cours...")
+    try:
+        await ctx.send(
+            content="video prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
+            file=discord.File(take_video(int(arg[0]))),
+        )
+    except:
+        await ctx.send(embed=makeEmbed(embedData["videoError"]))
+    await message.delete()
 
 
 @bot.command()
