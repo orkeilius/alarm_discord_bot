@@ -243,7 +243,8 @@ with open("setting/token.json") as file:
 @tasks.loop(hours=24)
 async def dailyCheck():
     await checkDisk(channel, True)
-    await deleteOldCapture(channel, setting["global"]["captureTimeout"], True)
+    if setting["global"]["captureTimeout"] != -1:
+        await deleteOldCapture(channel, setting["global"]["captureTimeout"], True)
 
 
 sys.stdout.write("loggin to discord...")
