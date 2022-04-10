@@ -17,6 +17,7 @@ with open("setting/setting.json") as file:
 
 try:
     os.mkdir("capture")
+    print("capture folder created")
 except:
     pass
 
@@ -27,7 +28,6 @@ bot = commands.Bot(
 
 camera = PiCamera()
 firstConnection = True
-event = False
 
 
 def makeEmbed(file):
@@ -50,7 +50,7 @@ def makeEmbed(file):
 # make a capture with picamera
 def take_picture():
     name = time.strftime("capture/img %Hh %Mmin %Ssec.jpg")
-    # Camera warm-up time
+    # Camera warm-up tim
     camera.capture(name)
     return name
 
@@ -66,7 +66,7 @@ def take_video(recordTime):
 
 @bot.event
 async def on_ready():
-    global firstConnection, channel, event
+    global firstConnection, channel
     if firstConnection:
         sys.stdout.write("ok \n")
         channel = bot.get_channel(setting["global"]["channel"])
