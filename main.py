@@ -153,15 +153,11 @@ async def state(ctx, *arg):
     embed = makeEmbed(embedData["state"])
     states = ""
     for elem in ils:
-        if elem[0].is_pressed:
-            states += "{} | {} {} \n".format(
-                elem[2],
-                "🟩" if elem[0].is_pressed == elem[1] else "🟥",
-                "close" if elem[0].is_pressed else "open",
-            )
-
-        else:
-            embed.add_field(name=elem[2], value="open", inline=True)
+        states += "{} | {} {} \n".format(
+            elem[2],
+            "🟩" if elem[0].is_pressed == elem[1] else "🟥",
+            "close" if elem[0].is_pressed else "open",
+        )
     embed.description = f"```{states}```"
     await ctx.send(embed=embed)
 
