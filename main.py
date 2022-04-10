@@ -3,6 +3,7 @@ from picamera import PiCamera
 from discord.ext import commands
 from discord.ext import tasks
 import gpiozero
+import shutil
 import os
 
 # from picamera import PiCamera
@@ -80,6 +81,7 @@ async def on_ready():
         gpioInit()
         firstConnection = False
         await channel.send(embed=makeEmbed(embedData["start"]))
+        await dailyCheck()
 
     else:
         sys.stdout.write(
@@ -94,7 +96,7 @@ async def alert_pic(name):
     global channel
     sys.stdout.write(f"> capteur {name} active\n")
     await channel.send(
-        content="alert !  le capteur {} a detecter quelque chose \n a {}".format(
+        content='alert !  le capteur "{}" a detecter quelque chose \n a {}'.format(
             name, time.strftime("%Hh %Mmin %Ssec")
         ),
         file=discord.File(take_picture()),
@@ -162,6 +164,27 @@ async def state(ctx, *arg):
     await ctx.send(embed=embed)
 
 
+@bot.command()
+async def disk(ctx, *arg):
+    await checkDisk(ctx.channel)
+
+
+async def checkDisk(channel, onlyIfLow=False):
+    """check disk space"""
+    disk = shutil.disk_usage("/")
+    if onlyIfLow:
+        if disk.free / disk.total > 0.1:
+            return
+        else:
+            sys.stdout.write("> disk space is low\n")
+            embed = makeEmbed(embedData["diskLow"])
+    else:
+        embed = makeEmbed(embedData["disk"])
+
+    embed.description = f"```{disk.total / (1024 * 1024 * 1024):.2f} Go au total\n {disk.used / (1024 * 1024 * 1024):.2f} Go utilise\n {disk.free / (1024 * 1024 * 1024):.2f} Go libre\n {disk.free / disk.total * 100:.2f} % libre``` "
+    await channel.send(embed=embed)
+
+
 # gpio setup
 @tasks.loop(seconds=0.5)
 async def eventLoop():
@@ -182,5 +205,12 @@ def gpioInit():
 with open("setting/token.json") as file:
     tokenFile = json.load(file)
 
+# daily check
+@tasks.loop(hours=24)
+async def dailyCheck():
+    await checkDisk(channel, True)
+
+
+sys.stdout.write("loggin to discord...")
 shellAccess = tokenFile["shellAccess"]
 bot.run(tokenFile["botToken"])
