@@ -205,7 +205,7 @@ async def deleteOldCapture(channel, day):
                     deletes.append(file)
 
     embed = makeEmbed(embedData["delete"])
-    embed.description = "liste des fichier supprimee```{}```".format(deletes.join("\n"))
+    embed.description = "liste des fichier supprimee```{}```".format("\n".join(deletes))
 
 
 # gpio setup
