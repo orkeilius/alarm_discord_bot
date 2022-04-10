@@ -17,6 +17,7 @@ with open("setting/setting.json") as file:
 
 try:
     os.mkdir("capture")
+    sys.stdout.write("capture folder created \n")
 except:
     pass
 
@@ -27,7 +28,6 @@ bot = commands.Bot(
 
 camera = PiCamera()
 firstConnection = True
-event = False
 
 
 def makeEmbed(file):
@@ -50,27 +50,27 @@ def makeEmbed(file):
 # make a capture with picamera
 def take_picture():
     name = time.strftime("capture/img %Hh %Mmin %Ssec.jpg")
-    # Camera warm-up time
     camera.capture(name)
+    sys.stdout.write(f"> photo enregisté :{name}\n")
     return name
 
 
 def take_video(recordTime):
     """record a video (only in h264 format because encoding are very slow on rasberry)"""
-    name = time.strftime("capture//   vid %Hh %Mmin %Ssec.h264")
+    name = time.strftime("capture/vid %Hh %Mmin %Ssec.h264")
     camera.start_recording(name)
     camera.wait_recording(recordTime)
     camera.stop_recording()
+    sys.stdout.write(f"> video enregisté :{name}\n")
     return name
 
 
 @bot.event
 async def on_ready():
-    global firstConnection, channel, event
+    global firstConnection, channel
     if firstConnection:
         sys.stdout.write("ok \n")
         channel = bot.get_channel(setting["global"]["channel"])
-        print(channel)
 
         sys.stdout.write(
             "logged in as {} \nat {}\n".format(
@@ -89,11 +89,14 @@ async def on_ready():
     return
 
 
-async def alert_pic():
+async def alert_pic(name):
     """take a picture"""
     global channel
+    sys.stdout.write(f"> capteur {name} active\n")
     await channel.send(
-        content="alert ! \n a {}".format(time.strftime("%Hh %Mmin %Ssec")),
+        content="alert !  le capteur {} a detecter quelque chose \n a {}".format(
+            name, time.strftime("%Hh %Mmin %Ssec")
+        ),
         file=discord.File(take_picture()),
     )
 
@@ -110,15 +113,14 @@ async def pic(ctx, *arg):
 @bot.command()
 async def vid(ctx, *arg):
     """manually take a video (only in h264 because encoding on rasberry are slow) argument: time in second"""
-    message = await ctx.send("enregistrement en cours...")
+    message = await ctx.send(content="enregistrement en cours...")
     try:
-        await ctx.send(
+        await ctx.send(file=discord.File(take_video(int(arg[0]))))
+        await message.edit(
             content="video prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
-            file=discord.File(take_video(int(arg[0]))),
         )
     except:
-        await ctx.send(embed=makeEmbed(embedData["videoError"]))
-    await message.delete()
+        await message.edit(content="", embed=makeEmbed(embedData["videoError"]))
 
 
 @bot.command()
@@ -129,15 +131,17 @@ async def shell(ctx, *arg):
         color=discord.Color.red(),
         description=" ".join(arg),
     )
-    embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
 
+    embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
     if ctx.author.id == shellAccess:
         try:
             embed.add_field(name="Result :", value=str(eval(" ".join(arg))))
             embed.color = discord.Color.blue()
         except:
             embed.add_field(name="Error :", value=str(sys.exc_info()))
-        print('> executed " {} " command in {}'.format(" ".join(arg), ctx.channel))
+        sys.stdout.write(
+            '> executed " {} " command in {}'.format(" ".join(arg), ctx.channel)
+        )
     else:
         embed.add_field(name="denied access", value="you can't use this command")
     await ctx.send(embed=embed)
@@ -148,19 +152,20 @@ async def shell(ctx, *arg):
 async def eventLoop():
     for elem in ils:
         if elem[0].is_pressed != elem[1]:
-            await alert_pic()
+            await alert_pic(elem[2])
 
 
 def gpioInit():
     global ils
     ils = []
     for elem in setting["alarm"]["ils"]:
-        ils.append([gpiozero.Button(elem["port"]), elem["close"]])
+        ils.append([gpiozero.Button(elem["port"]), elem["close"], elem["name"]])
 
     eventLoop.start()
 
 
 with open("setting/token.json") as file:
-    fileData = json.load(file)
-    shellAccess = fileData["shellAccess"]
-    bot.run(fileData["botToken"])
+    tokenFile = json.load(file)
+
+shellAccess = tokenFile["shellAccess"]
+bot.run(tokenFile["botToken"])
