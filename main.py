@@ -51,7 +51,7 @@ def makeEmbed(file):
 def take_picture():
     name = time.strftime("capture/img %Hh %Mmin %Ssec.jpg")
     camera.capture(name)
-    sys.stdout.write(f"> photo enregisté {name}\n")
+    sys.stdout.write(f"> photo enregisté :{name}\n")
     return name
 
 
@@ -61,7 +61,7 @@ def take_video(recordTime):
     camera.start_recording(name)
     camera.wait_recording(recordTime)
     camera.stop_recording()
-    sys.stdout.write(f"> video enregisté {name}\n")
+    sys.stdout.write(f"> video enregisté :{name}\n")
     return name
 
 
