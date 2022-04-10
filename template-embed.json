@@ -28,5 +28,11 @@
     "description": "",
     "color": [0, 0, 255],
     "fields": []
+  },
+  "disk":{
+    "title": "Utilisation du disque :",
+    "description": "",
+    "color": [0, 0, 255],
+    "fields": []
   }
 }
