@@ -81,6 +81,7 @@ async def on_ready():
         gpioInit()
         firstConnection = False
         await channel.send(embed=makeEmbed(embedData["start"]))
+        dailyCheck()
 
     else:
         sys.stdout.write(
@@ -171,7 +172,7 @@ async def disk(ctx, *arg):
 async def checkDisk(channel, onlyIfLow=False):
     """check disk space"""
     disk = shutil.disk_usage("/")
-    if disk.total / disk.free > 0.8 and onlyIfLow:
+    if disk.total / disk.free > 0.2 and onlyIfLow:
         return
 
     embed = makeEmbed(embedData["disk"])
