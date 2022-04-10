@@ -220,7 +220,7 @@ with open("setting/token.json") as file:
 @tasks.loop(hours=24)
 async def dailyCheck():
     await checkDisk(channel, True)
-    deleteOldCapture(30)
+    deleteOldCapture(1)
 
 
 sys.stdout.write("loggin to discord...")
