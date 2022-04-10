@@ -213,7 +213,7 @@ async def deleteOldCapture(channel, day, automatic=False):
             await channel.send(embed=makeEmbed(embedData["deleteEmpty"]))
     else:
         embed = makeEmbed(embedData["delete"])
-        embed.description = "liste des fichier supprimee :  \n  ```{}```".format(
+        embed.description = "liste des fichier supprime :  \n  ```{}```".format(
             "\n".join(deletes)
         )
         await channel.send(embed=embed)
