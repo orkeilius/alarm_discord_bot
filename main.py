@@ -84,20 +84,13 @@ async def on_ready():
         firstConnection = False
         await channel.send(embed=makeEmbed(embedData["start"]))
         await dailyCheck()
+        sys.stdout.write(" - - - event - - - \n")
 
     else:
         sys.stdout.write(
             "> reconnected at {}\n".format(time.strftime("%Hh %Mmin %Ssec"))
         )
         await channel.send(embed=makeEmbed(embedData["reconnect"]))
-    sys.stdout.write(" - - - event - - - \n")
-    return
-
-
-@bot.event
-async def on_resume():
-    sys.stdout.write("> reconnected at {}\n".format(time.strftime("%Hh %Mmin %Ssec")))
-    await channel.send(embed=makeEmbed(embedData["reconnect"]))
 
 
 async def alert_pic(name):
