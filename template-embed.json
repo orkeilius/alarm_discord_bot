@@ -40,5 +40,17 @@
     "description": "",
     "color": [255, 0, 0],
     "fields": []
+  },
+  "delete":{
+    "title": "Capture supprimee",
+    "description": "",
+    "color": [255, 0, 0],
+    "fields": []
+  },
+  "deleteEmpty":{
+    "title": "Aucun fichier correspondant",
+    "description": "Aucin fichier n'a ete supprime",
+    "color": [0, 0, 255],
+    "fields": []
   }
 }

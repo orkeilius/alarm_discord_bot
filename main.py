@@ -1,4 +1,6 @@
 from concurrent.futures import thread
+
+from pyparsing import CharsNotIn
 from picamera import PiCamera
 from discord.ext import commands
 from discord.ext import tasks
@@ -52,7 +54,7 @@ def makeEmbed(file):
 def take_picture():
     name = time.strftime("capture/img %Hh %Mmin %Ssec.jpg")
     camera.capture(name)
-    sys.stdout.write(f"> photo enregisté :{name}\n")
+    sys.stdout.write(f"> photo enregisté : {name}\n")
     return name
 
 
@@ -62,7 +64,7 @@ def take_video(recordTime):
     camera.start_recording(name)
     camera.wait_recording(recordTime)
     camera.stop_recording()
-    sys.stdout.write(f"> video enregisté :{name}\n")
+    sys.stdout.write(f"> video enregistre : {name}\n")
     return name
 
 
@@ -185,6 +187,37 @@ async def checkDisk(channel, onlyIfLow=False):
     await channel.send(embed=embed)
 
 
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def delete(ctx, day=999999999, *arg):
+    """delete all capture older than day argument: day in number"""
+    await deleteOldCapture(ctx.channel, float(day))
+
+
+async def deleteOldCapture(channel, day, automatic=False):
+    """delete old image"""
+    deletes = []
+    for file in os.listdir("capture"):
+        if file.endswith(".jpg") or file.endswith(".h264"):
+            file_path = os.path.join("capture/", file)
+            if os.path.isfile(file_path):
+                if time.time() - os.path.getmtime(file_path) > day * 24 * 60 * 60:
+                    os.remove(file_path)
+                    sys.stdout.write(f"> {file_path} deleted\n")
+                    deletes.append(file)
+
+    if len(deletes) == 0:
+        if automatic:
+            return
+        else:
+            await channel.send(embed=makeEmbed(embedData["deleteEmpty"]))
+    else:
+        embed = makeEmbed(embedData["delete"])
+        embed.description = "liste des fichier supprimee :  \n  ```{}```".format(
+            "\n".join(deletes)
+        )
+        await channel.send(embed=embed)
+
 # gpio setup
 @tasks.loop(seconds=0.5)
 async def eventLoop():
@@ -209,6 +242,9 @@ with open("setting/token.json") as file:
 @tasks.loop(hours=24)
 async def dailyCheck():
     await checkDisk(channel, True)
+    if setting["global"]["captureTimeout"] != -1:
+        await deleteOldCapture(channel, setting["global"]["captureTimeout"], True)
+
 
 
 sys.stdout.write("loggin to discord...")
