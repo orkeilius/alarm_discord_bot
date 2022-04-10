@@ -81,7 +81,7 @@ async def on_ready():
         gpioInit()
         firstConnection = False
         await channel.send(embed=makeEmbed(embedData["start"]))
-        dailyCheck()
+        await dailyCheck()
 
     else:
         sys.stdout.write(
