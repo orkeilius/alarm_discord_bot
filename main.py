@@ -199,7 +199,7 @@ with open("setting/token.json") as file:
     tokenFile = json.load(file)
 
 # daily check
-@tasks.loop(days=1)
+@tasks.loop(hours=24)
 async def dailyCheck():
     await checkDisk(channel, True)
 
