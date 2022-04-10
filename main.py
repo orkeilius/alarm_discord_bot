@@ -162,7 +162,7 @@ async def state(ctx, *arg):
 
         else:
             embed.add_field(name=elem[2], value="open", inline=True)
-    embed.description = "```{states}```"
+    embed.description = f"```{states}```"
     await ctx.send(embed=embed)
 
 
