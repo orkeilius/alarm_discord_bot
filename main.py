@@ -84,13 +84,13 @@ async def on_ready():
         firstConnection = False
         await channel.send(embed=makeEmbed(embedData["start"]))
         await dailyCheck()
+        sys.stdout.write(" - - - event - - - \n")
 
     else:
         sys.stdout.write(
             "> reconnected at {}\n".format(time.strftime("%Hh %Mmin %Ssec"))
         )
-    sys.stdout.write(" - - - event - - - \n")
-    return
+        await channel.send(embed=makeEmbed(embedData["reconnect"]))
 
 
 async def alert_pic(name):
@@ -213,9 +213,7 @@ async def deleteOldCapture(channel, day, automatic=False):
             await channel.send(embed=makeEmbed(embedData["deleteEmpty"]))
     else:
         embed = makeEmbed(embedData["delete"])
-        embed.description = "liste des fichier supprimee :  \n  ```{}```".format(
-            "\n".join(deletes)
-        )
+        embed.description = "liste des fichier supprime :  \n  ```{}```".format("\n".join(deletes))
         await channel.send(embed=embed)
 
 # gpio setup
@@ -244,8 +242,6 @@ async def dailyCheck():
     await checkDisk(channel, True)
     if setting["global"]["captureTimeout"] != -1:
         await deleteOldCapture(channel, setting["global"]["captureTimeout"], True)
-
-
 
 sys.stdout.write("loggin to discord...")
 shellAccess = tokenFile["shellAccess"]
