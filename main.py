@@ -189,7 +189,7 @@ async def checkDisk(channel, onlyIfLow=False):
 @commands.has_permissions(administrator=True)
 async def delete(ctx, day, *arg):
     """delete all capture older than day argument: day in number"""
-    await deleteOldCapture(ctx.channel, day)
+    await deleteOldCapture(ctx.channel, int(day))
 
 
 async def deleteOldCapture(channel, day):
