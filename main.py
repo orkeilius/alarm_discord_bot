@@ -1,4 +1,6 @@
 from concurrent.futures import thread
+
+from pyparsing import CharsNotIn
 from picamera import PiCamera
 from discord.ext import commands
 from discord.ext import tasks
@@ -192,7 +194,7 @@ async def delete(ctx, day, *arg):
     await deleteOldCapture(ctx.channel, int(day))
 
 
-async def deleteOldCapture(channel, day):
+async def deleteOldCapture(channel, day, automatic=False):
     """delete old image"""
     deletes = []
     for file in os.listdir("capture"):
@@ -204,7 +206,12 @@ async def deleteOldCapture(channel, day):
                     sys.stdout.write(f"> {file_path} deleted\n")
                     deletes.append(file)
 
-    if len(deletes) != 0:
+    if len(deletes) == 0
+        if automatic:
+            return
+        else:
+            await channel.send(embedData["deleteEmpty"])
+    else:
         embed = makeEmbed(embedData["delete"])
         embed.description = "liste des fichier \n  ```{}```".format("\n".join(deletes))
         await channel.send(embed=embed)
@@ -234,7 +241,7 @@ with open("setting/token.json") as file:
 @tasks.loop(hours=24)
 async def dailyCheck():
     await checkDisk(channel, True)
-    await deleteOldCapture(channel, setting["global"]["captureTimeout"])
+    await deleteOldCapture(channel, setting["global"]["captureTimeout"], True)
 
 
 sys.stdout.write("loggin to discord...")
