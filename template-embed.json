@@ -34,5 +34,11 @@
     "description": "",
     "color": [0, 0, 255],
     "fields": []
+  },
+  "diskLow":{
+    "title": "Alert disque bientot plein :",
+    "description": "",
+    "color": [255, 0, 0],
+    "fields": []
   }
 }

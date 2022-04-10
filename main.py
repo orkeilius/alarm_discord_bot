@@ -172,10 +172,15 @@ async def disk(ctx, *arg):
 async def checkDisk(channel, onlyIfLow=False):
     """check disk space"""
     disk = shutil.disk_usage("/")
-    if disk.total / disk.free < 0.2 and onlyIfLow:
-        return
+    if onlyIfLow:
+        if disk.total / disk.free < 0.2:
+            return
+        else:
+            sys.stdout.write("> disk space is low\n")
+            embed = makeEmbed(embedData["diskLow"])
+    else:
+        embed = makeEmbed(embedData["disk"])
 
-    embed = makeEmbed(embedData["disk"])
     embed.description = f"```{disk.total / (1024 * 1024 * 1024):.2f} Go au total\n {disk.used / (1024 * 1024 * 1024):.2f} Go utilise\n {disk.free / (1024 * 1024 * 1024):.2f} Go libre\n {disk.free / disk.total * 100:.2f} % libre``` "
     await channel.send(embed=embed)
 
