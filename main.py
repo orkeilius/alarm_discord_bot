@@ -111,12 +111,12 @@ async def vid(ctx, *arg):
     """manually take a video (only in h264 because encoding on rasberry are slow) argument: time in second"""
     message = await ctx.send("enregistrement en cours...")
     try:
-        await ctx.send(
+        await message.edit(
             content="video prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
             file=discord.File(take_video(int(arg[0]))),
         )
     except:
-        await ctx.send(embed=makeEmbed(embedData["videoError"]))
+        await message.edit(embed=makeEmbed(embedData["videoError"]))
     await message.delete()
 
 
@@ -128,8 +128,8 @@ async def shell(ctx, *arg):
         color=discord.Color.red(),
         description=" ".join(arg),
     )
+    
     embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
-
     if ctx.author.id == shellAccess:
         try:
             embed.add_field(name="Result :", value=str(eval(" ".join(arg))))
@@ -155,7 +155,7 @@ def gpioInit():
     ils = []
     for elem in setting["alarm"]["ils"]:
         ils.append([gpiozero.Button(elem["port"]), elem["close"]])
-
+    
     eventLoop.start()
 
 
