@@ -171,7 +171,7 @@ async def disk(ctx, *arg):
 async def checkDisk(channel, onlyIfLow=False):
     """check disk space"""
     disk = shutil.disk_usage("/")
-    if disk.total / disk.free < 0.8 and onlyIfLow:
+    if disk.total / disk.free > 0.8 and onlyIfLow:
         return
 
     embed = makeEmbed(embedData["disk"])
