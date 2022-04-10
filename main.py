@@ -189,7 +189,7 @@ def deleteOldCapture(day):
     """delete old image"""
     for file in os.listdir("capture"):
         if file.endswith(".jpg"):
-            file_path = os.path.join("capture", file)
+            file_path = os.path.join("capture/", file)
             if os.path.isfile(file_path):
                 if time.time() - os.path.getmtime(file_path) > day * 24 * 60 * 60:
                     os.remove(file_path)
