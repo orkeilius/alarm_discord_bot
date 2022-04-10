@@ -17,7 +17,7 @@ with open("setting/setting.json") as file:
 
 try:
     os.mkdir("capture")
-    print("capture folder created")
+    sys.stdout.write("capture folder created \n")
 except:
     pass
 
@@ -51,6 +51,7 @@ def makeEmbed(file):
 def take_picture():
     name = time.strftime("capture/img %Hh %Mmin %Ssec.jpg")
     camera.capture(name)
+    sys.stdout.write(f"> photo enregisté {name}\n")
     return name
 
 
@@ -60,6 +61,7 @@ def take_video(recordTime):
     camera.start_recording(name)
     camera.wait_recording(recordTime)
     camera.stop_recording()
+    sys.stdout.write(f"> video enregisté {name}\n")
     return name
 
 
@@ -69,7 +71,6 @@ async def on_ready():
     if firstConnection:
         sys.stdout.write("ok \n")
         channel = bot.get_channel(setting["global"]["channel"])
-        print(channel)
 
         sys.stdout.write(
             "logged in as {} \nat {}\n".format(
@@ -88,11 +89,14 @@ async def on_ready():
     return
 
 
-async def alert_pic():
+async def alert_pic(name):
     """take a picture"""
     global channel
+    sys.stdout.write(f"> capteur {name} active\n")
     await channel.send(
-        content="alert ! \n a {}".format(time.strftime("%Hh %Mmin %Ssec")),
+        content="alert !  le capteur {} a detecter quelque chose \n a {}".format(
+            name, time.strftime("%Hh %Mmin %Ssec")
+        ),
         file=discord.File(take_picture()),
     )
 
@@ -135,7 +139,9 @@ async def shell(ctx, *arg):
             embed.color = discord.Color.blue()
         except:
             embed.add_field(name="Error :", value=str(sys.exc_info()))
-        print('> executed " {} " command in {}'.format(" ".join(arg), ctx.channel))
+        sys.stdout.write(
+            '> executed " {} " command in {}'.format(" ".join(arg), ctx.channel)
+        )
     else:
         embed.add_field(name="denied access", value="you can't use this command")
     await ctx.send(embed=embed)
@@ -146,14 +152,14 @@ async def shell(ctx, *arg):
 async def eventLoop():
     for elem in ils:
         if elem[0].is_pressed != elem[1]:
-            await alert_pic()
+            await alert_pic(elem[2])
 
 
 def gpioInit():
     global ils
     ils = []
     for elem in setting["alarm"]["ils"]:
-        ils.append([gpiozero.Button(elem["port"]), elem["close"]])
+        ils.append([gpiozero.Button(elem["port"]), elem["close"], elem["name"]])
 
     eventLoop.start()
 
