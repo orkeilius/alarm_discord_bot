@@ -57,7 +57,7 @@ def take_picture():
 
 def take_video(recordTime):
     """record a video (only in h264 format because encoding are very slow on rasberry)"""
-    name = time.strftime("capture//   vid %Hh %Mmin %Ssec.h264")
+    name = time.strftime("capture/vid %Hh %Mmin %Ssec.h264")
     camera.start_recording(name)
     camera.wait_recording(recordTime)
     camera.stop_recording()
