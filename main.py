@@ -211,5 +211,6 @@ async def dailyCheck():
     await checkDisk(channel, True)
 
 
+sys.stdout.write("loggin to discord...")
 shellAccess = tokenFile["shellAccess"]
 bot.run(tokenFile["botToken"])
