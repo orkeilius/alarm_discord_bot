@@ -50,7 +50,6 @@ def makeEmbed(file):
 # make a capture with picamera
 def take_picture():
     name = time.strftime("capture/img %Hh %Mmin %Ssec.jpg")
-    # Camera warm-up tim
     camera.capture(name)
     return name
 
@@ -161,6 +160,7 @@ def gpioInit():
 
 
 with open("setting/token.json") as file:
-    fileData = json.load(file)
-    shellAccess = fileData["shellAccess"]
-    bot.run(fileData["botToken"])
+    tokenFile = json.load(file)
+
+shellAccess = tokenFile["shellAccess"]
+bot.run(tokenFile["botToken"])
