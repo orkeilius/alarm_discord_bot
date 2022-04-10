@@ -218,7 +218,6 @@ async def deleteOldCapture(channel, day, automatic=False):
         )
         await channel.send(embed=embed)
 
-
 # gpio setup
 @tasks.loop(seconds=0.5)
 async def eventLoop():
@@ -245,6 +244,7 @@ async def dailyCheck():
     await checkDisk(channel, True)
     if setting["global"]["captureTimeout"] != -1:
         await deleteOldCapture(channel, setting["global"]["captureTimeout"], True)
+
 
 
 sys.stdout.write("loggin to discord...")
