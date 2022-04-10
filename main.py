@@ -206,7 +206,7 @@ async def deleteOldCapture(channel, day, automatic=False):
                     sys.stdout.write(f"> {file_path} deleted\n")
                     deletes.append(file)
 
-    if len(deletes) == 0
+    if len(deletes) == 0:
         if automatic:
             return
         else:
