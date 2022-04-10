@@ -110,10 +110,13 @@ async def pic(ctx, *arg):
 async def vid(ctx, *arg):
     """manually take a video (only in h264 because encoding on rasberry are slow) argument: time in second"""
     message = await ctx.send(content="enregistrement en cours...")
-    await message.edit(
-        content="video prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
-        file=discord.File(take_video(int(arg[0]))),
-    )
+    try:
+        await ctx.send(file=discord.File(take_video(int(arg[0]))))
+        await message.edit(
+            content="video prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
+        )
+    except:
+        await message.edit(content="", embed=makeEmbed(embedData["videoError"]))
 
 
 @bot.command()
