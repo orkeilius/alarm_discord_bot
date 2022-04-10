@@ -94,6 +94,12 @@ async def on_ready():
     return
 
 
+@bot.event
+async def on_resume():
+    sys.stdout.write("> reconnected at {}\n".format(time.strftime("%Hh %Mmin %Ssec")))
+    await channel.send(embed=makeEmbed(embedData["reconnect"]))
+
+
 async def alert_pic(name):
     """take a picture"""
     global channel
