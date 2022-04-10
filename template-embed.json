@@ -17,6 +17,12 @@
     "color": [0, 255, 0],
     "fields": []
   },
+  "reconnect": {
+    "title": "reconnect",
+    "description": "probleme de connexion au serveur discord",
+    "color": [255, 0, 0],
+    "fields": []
+  },
   "videoError": {
     "title": "Erreur",
     "description": "vidéo trop grande pour discord",
@@ -53,4 +59,5 @@
     "color": [0, 0, 255],
     "fields": []
   }
+  
 }

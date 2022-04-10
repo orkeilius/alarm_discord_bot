@@ -89,6 +89,7 @@ async def on_ready():
         sys.stdout.write(
             "> reconnected at {}\n".format(time.strftime("%Hh %Mmin %Ssec"))
         )
+        await channel.send(embed=makeEmbed(embedData["reconnect"]))
     sys.stdout.write(" - - - event - - - \n")
     return
 
@@ -218,6 +219,7 @@ async def deleteOldCapture(channel, day, automatic=False):
         )
         await channel.send(embed=embed)
 
+
 # gpio setup
 @tasks.loop(seconds=0.5)
 async def eventLoop():
@@ -244,7 +246,6 @@ async def dailyCheck():
     await checkDisk(channel, True)
     if setting["global"]["captureTimeout"] != -1:
         await deleteOldCapture(channel, setting["global"]["captureTimeout"], True)
-
 
 
 sys.stdout.write("loggin to discord...")
