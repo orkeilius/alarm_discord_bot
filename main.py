@@ -191,7 +191,7 @@ async def checkDisk(channel, onlyIfLow=False):
 @commands.has_permissions(administrator=True)
 async def delete(ctx, day, *arg):
     """delete all capture older than day argument: day in number"""
-    await deleteOldCapture(ctx.channel, int(day))
+    await deleteOldCapture(ctx.channel, float(day))
 
 
 async def deleteOldCapture(channel, day, automatic=False):
@@ -210,7 +210,7 @@ async def deleteOldCapture(channel, day, automatic=False):
         if automatic:
             return
         else:
-            await channel.send(embedData["deleteEmpty"])
+            await channel.send(embed=embedData["deleteEmpty"])
     else:
         embed = makeEmbed(embedData["delete"])
         embed.description = "liste des fichier \n  ```{}```".format("\n".join(deletes))
