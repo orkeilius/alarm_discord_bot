@@ -185,16 +185,28 @@ async def checkDisk(channel, onlyIfLow=False):
     await channel.send(embed=embed)
 
 
-def deleteOldCapture(day):
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def delete(ctx,day, *arg):
+    """delete all capture older than day argument: day in number"""
+    await deleteOldCapture(ctx.channel, day)
+
+
+async def deleteOldCapture(channel, day):
     """delete old image"""
+    deletes = []
     for file in os.listdir("capture"):
-        if file.endswith(".jpg"):
+        if file.endswith(".jpg") or file.endswith(".h264"):
             file_path = os.path.join("capture/", file)
             if os.path.isfile(file_path):
                 if time.time() - os.path.getmtime(file_path) > day * 24 * 60 * 60:
                     os.remove(file_path)
                     sys.stdout.write(f"> {file_path} deleted\n")
-
+                    deletes.append(file)
+                    
+    embed = makeEmbed(embedData["delete"])
+    embed.description = f"liste des fichier supprimee```{deletes.join('\n')}```"
+    
 
 # gpio setup
 @tasks.loop(seconds=0.5)
@@ -218,9 +230,9 @@ with open("setting/token.json") as file:
 
 # daily check
 @tasks.loop(hours=24)
-async def dailyCheck():
+async def dailyCheck():  
     await checkDisk(channel, True)
-    deleteOldCapture(0.5)
+    await deleteOldCapture(channel, setting["global"]["captureTimeout"])
 
 
 sys.stdout.write("loggin to discord...")

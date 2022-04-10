@@ -40,5 +40,11 @@
     "description": "",
     "color": [255, 0, 0],
     "fields": []
+  },
+  "delete":{
+    "title": "Capture supprimee",
+    "description": "",
+    "color": [255, 0, 0],
+    "fields": []
   }
 }
