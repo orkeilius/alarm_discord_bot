@@ -117,7 +117,6 @@ async def vid(ctx, *arg):
         )
     except:
         await message.edit(embed=makeEmbed(embedData["videoError"]))
-    await message.delete()
 
 
 @bot.command()
@@ -128,7 +127,7 @@ async def shell(ctx, *arg):
         color=discord.Color.red(),
         description=" ".join(arg),
     )
-    
+
     embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.avatar_url)
     if ctx.author.id == shellAccess:
         try:
@@ -155,7 +154,7 @@ def gpioInit():
     ils = []
     for elem in setting["alarm"]["ils"]:
         ils.append([gpiozero.Button(elem["port"]), elem["close"]])
-    
+
     eventLoop.start()
 
 
