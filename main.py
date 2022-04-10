@@ -64,7 +64,7 @@ def take_video(recordTime):
     camera.start_recording(name)
     camera.wait_recording(recordTime)
     camera.stop_recording()
-    sys.stdout.write(f"> video enregisté :{name}\n")
+    sys.stdout.write(f"> video enregistre :{name}\n")
     return name
 
 
