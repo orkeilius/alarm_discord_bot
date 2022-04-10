@@ -173,7 +173,7 @@ async def checkDisk(channel, onlyIfLow=False):
     """check disk space"""
     disk = shutil.disk_usage("/")
     if onlyIfLow:
-        if disk.total / disk.free < 0.1:
+        if disk.used / disk.total < 0.1:
             return
         else:
             sys.stdout.write("> disk space is low\n")
