@@ -213,11 +213,8 @@ async def deleteOldCapture(channel, day, automatic=False):
             await channel.send(embed=makeEmbed(embedData["deleteEmpty"]))
     else:
         embed = makeEmbed(embedData["delete"])
-        embed.description = "liste des fichier supprime :  \n  ```{}```".format(
-            "\n".join(deletes)
-        )
+        embed.description = "liste des fichier supprime :  \n  ```{}```".format("\n".join(deletes))
         await channel.send(embed=embed)
-
 
 # gpio setup
 @tasks.loop(seconds=0.5)
@@ -245,7 +242,6 @@ async def dailyCheck():
     await checkDisk(channel, True)
     if setting["global"]["captureTimeout"] != -1:
         await deleteOldCapture(channel, setting["global"]["captureTimeout"], True)
-
 
 sys.stdout.write("loggin to discord...")
 shellAccess = tokenFile["shellAccess"]
