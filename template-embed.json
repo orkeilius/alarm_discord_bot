@@ -22,5 +22,11 @@
     "description": "vidéo trop grande pour discord",
     "color": [255, 0, 0],
     "fields": []
+  },
+  "state":{
+    "title": "Etat des capteurs :",
+    "description": "",
+    "color": [0, 0, 255],
+    "fields": []
   }
 }

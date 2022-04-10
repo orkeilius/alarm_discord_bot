@@ -147,6 +147,21 @@ async def shell(ctx, *arg):
     await ctx.send(embed=embed)
 
 
+@bot.command()
+async def state(ctx, *arg):
+    """show state of all sensors"""
+    embed = makeEmbed(embedData["state"])
+    states = ""
+    for elem in ils:
+        states += "{} | {} {} \n".format(
+            elem[2],
+            "🟩" if elem[0].is_pressed == elem[1] else "🟥",
+            "close" if elem[0].is_pressed else "open",
+        )
+    embed.description = f"```{states}```"
+    await ctx.send(embed=embed)
+
+
 # gpio setup
 @tasks.loop(seconds=0.5)
 async def eventLoop():
