@@ -175,7 +175,7 @@ async def checkDisk(channel, onlyIfLow=False):
 
     embed = makeEmbed(embedData["disk"])
     embed.description = f"```{disk.total / (1024 * 1024 * 1024):.2f} Go\n {disk.used / (1024 * 1024 * 1024):.2f} Go utilise\n {disk.free / (1024 * 1024 * 1024):.2f} Go libre\n {disk.free / disk.total * 100:.2f} % libre``` "
-    channel.send(embed=embed)
+    await channel.send(embed=embed)
 
 
 # gpio setup
