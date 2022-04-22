@@ -184,7 +184,11 @@ async def checkDisk(channel, onlyIfLow=False):
     else:
         embed = makeEmbed(text["embed"]["disk"])
 
-    embed.description = text["text"]["disk"].format( disk.total / (1024 * 1024 * 1024):.2f,disk.used / (1024 * 1024 * 1024):.2f,disk.free / (1024 * 1024 * 1024):.2f,disk.free / disk.total * 100:.2f )
+    embed.description = text["text"]["disk"].format( 
+        disk.total / (1024 * 1024 * 1024),
+        disk.used / (1024 * 1024 * 1024),
+        disk.free / (1024 * 1024 * 1024) ,
+        disk.free / disk.total * 100)
     await channel.send(embed=embed)
 
 

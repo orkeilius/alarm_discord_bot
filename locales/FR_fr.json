@@ -14,7 +14,7 @@
     "vidTaken": "vidéo prise a {}",
     "open": "ouvert",
     "close": "ferme",
-    "disk": "```{} Go au total\n {} Go utilise\n {} Go libre\n {} % libre```",
+    "disk": "```{:.2f} Go au total\n {:.2f} Go utilise\n {:.2f} Go libre\n {:.2f} % libre```",
     "delete": "liste des fichier supprime :  \n  ```{}```"
   
   },
