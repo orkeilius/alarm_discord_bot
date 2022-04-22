@@ -217,7 +217,7 @@ async def deleteOldCapture(channel, day, automatic=False):
             await channel.send(embed=makeEmbed(text["embed"]["deleteEmpty"]))
     else:
         embed = makeEmbed(text["embed"]["delete"])
-        embed.description = text["embed"]["delete"].format("\n".join(deletes))
+        embed.description = text["text"]["delete"].format("\n".join(deletes))
         await channel.send(embed=embed)
 
 
