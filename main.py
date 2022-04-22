@@ -95,9 +95,9 @@ async def on_ready():
 async def alert_pic(name):
     """take a picture"""
     global channel
-    sys.stdout.write(text["debug"]["sensor_activated"].format(name))
+    sys.stdout.write(text["debug"]["sensorActivated"].format(name))
     await channel.send(
-        content=text["text"]["sensor_activated"].format(
+        content=text["text"]["sensorActivated"].format(
             name, time.strftime("%Hh %Mmin %Ssec")
         ),
         file=discord.File(take_picture()),
@@ -124,8 +124,6 @@ async def vid(ctx, *arg):
         )
     except:
         await message.edit(content="", embed=makeEmbed(text["embed"]["videoError"]))
-
-
 
 
 @bot.command()
@@ -184,11 +182,12 @@ async def checkDisk(channel, onlyIfLow=False):
     else:
         embed = makeEmbed(text["embed"]["disk"])
 
-    embed.description = text["text"]["disk"].format( 
+    embed.description = text["text"]["disk"].format(
         disk.total / (1024 * 1024 * 1024),
         disk.used / (1024 * 1024 * 1024),
-        disk.free / (1024 * 1024 * 1024) ,
-        disk.free / disk.total * 100)
+        disk.free / (1024 * 1024 * 1024),
+        disk.free / disk.total * 100,
+    )
     await channel.send(embed=embed)
 
 
@@ -218,10 +217,9 @@ async def deleteOldCapture(channel, day, automatic=False):
             await channel.send(embed=makeEmbed(text["embed"]["deleteEmpty"]))
     else:
         embed = makeEmbed(text["embed"]["delete"])
-        embed.description = text["embed"]["delete"].format(
-            "\n".join(deletes)
-        )
+        embed.description = text["embed"]["delete"].format("\n".join(deletes))
         await channel.send(embed=embed)
+
 
 # gpio setup
 @tasks.loop(seconds=0.5)

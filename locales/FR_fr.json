@@ -1,11 +1,9 @@
 {
   "debug":{
-    "debug":{
-      "makeCapture": "dossier capture crée \n",
-      "saveImg": "> photo enregisté : {}\n",
-      "saveVid": "> vidéo enregisté : {}\n",
-      "sensorActivated": "> capteur \"{}\" active\n"
-    }
+    "makeCapture": "dossier capture crée \n",
+    "saveImg": "> photo enregisté : {}\n",
+    "saveVid": "> vidéo enregisté : {}\n",
+    "sensorActivated": "> capteur \"{}\" active\n"
   },
   "text":{
     "sensorActivated": "alert !  le capteur '{}' a detecter quelque chose \n a {}",
