@@ -95,9 +95,9 @@ async def on_ready():
 async def alert_pic(name):
     """take a picture"""
     global channel
-    sys.stdout.write(text["debug"]["sensorActivated"].format(name))
+    sys.stdout.write(text["debug"]["sensor_activated"].format(name))
     await channel.send(
-        content=text["text"]["sensorActivated"].format(
+        content=text["text"]["sensor_activated"].format(
             name, time.strftime("%Hh %Mmin %Ssec")
         ),
         file=discord.File(take_picture()),
