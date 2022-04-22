@@ -4,11 +4,11 @@
       "makeCapture": "dossier capture crée \n",
       "saveImg": "> photo enregisté : {}\n",
       "saveVid": "> vidéo enregisté : {}\n",
-      "sensor_activated": "> capteur \"{}\" active\n"
+      "sensorActivated": "> capteur \"{}\" active\n"
     }
   },
   "text":{
-    "sensor_activated": "alert !  le capteur \"{}\" a detecter quelque chose \n a {}",
+    "sensorActivated": "alert !  le capteur '{}' a detecter quelque chose \n a {}",
     "imgTaken": "image prise a {}",
     "record": "enregistrement en cours...",
     "vidTaken": "vidéo prise a {}",
