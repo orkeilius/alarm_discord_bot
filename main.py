@@ -1,5 +1,4 @@
 from concurrent.futures import thread
-
 from pyparsing import CharsNotIn
 from picamera import PiCamera
 from discord.ext import commands
@@ -12,15 +11,15 @@ import os
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import discord, json, random, time, sys, threading, asyncio
 
-with open("template-embed.json") as file:
-    embedData = json.load(file)
-
 with open("setting/setting.json") as file:
     setting = json.load(file)
 
+with open("locales/{}.json".format(setting["global"]["language"])) as file:
+    text = json.load(file)
+
 try:
     os.mkdir("capture")
-    sys.stdout.write("capture folder created \n")
+    sys.stdout.write(text["debug"]["makeCapture"])
 except:
     pass
 
@@ -54,7 +53,7 @@ def makeEmbed(file):
 def take_picture():
     name = time.strftime("capture/img %Hh %Mmin %Ssec.jpg")
     camera.capture(name)
-    sys.stdout.write(f"> photo enregisté : {name}\n")
+    sys.stdout.write(text["debug"]["saveImg"].format(name))
     return name
 
 
@@ -64,7 +63,7 @@ def take_video(recordTime):
     camera.start_recording(name)
     camera.wait_recording(recordTime)
     camera.stop_recording()
-    sys.stdout.write(f"> video enregistre : {name}\n")
+    sys.stdout.write(text["debug"]["saveVid"].format(name))
     return name
 
 
@@ -82,7 +81,7 @@ async def on_ready():
         )
         gpioInit()
         firstConnection = False
-        await channel.send(embed=makeEmbed(embedData["start"]))
+        await channel.send(embed=makeEmbed(text["embed"]["start"]))
         await dailyCheck()
         sys.stdout.write(" - - - event - - - \n")
 
@@ -90,26 +89,26 @@ async def on_ready():
         sys.stdout.write(
             "> reconnected at {}\n".format(time.strftime("%Hh %Mmin %Ssec"))
         )
-        await channel.send(embed=makeEmbed(embedData["reconnect"]))
+        await channel.send(embed=makeEmbed(text["embed"]["reconnect"]))
+
 
 
 async def alert_pic(name):
     """take a picture"""
     global channel
-    sys.stdout.write(f"> capteur {name} active\n")
+    sys.stdout.write(text["debug"]["sensorActivated"].format(name))
     await channel.send(
-        content='alert !  le capteur "{}" a detecter quelque chose \n a {}'.format(
+        content=text["text"]["sensorActivated"].format(
             name, time.strftime("%Hh %Mmin %Ssec")
         ),
         file=discord.File(take_picture()),
     )
 
-
 @bot.command()
 async def pic(ctx, *arg):
     """manually take a picture"""
     await ctx.send(
-        content="image prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
+        content=text["text"]["imgTaken"].format(time.strftime("%Hh %Mmin %Ssec")),
         file=discord.File(take_picture()),
     )
 
@@ -117,14 +116,14 @@ async def pic(ctx, *arg):
 @bot.command()
 async def vid(ctx, *arg):
     """manually take a video (only in h264 because encoding on rasberry are slow) argument: time in second"""
-    message = await ctx.send(content="enregistrement en cours...")
+    message = await ctx.send(content=text["text"]["record"])
     try:
         await ctx.send(file=discord.File(take_video(int(arg[0]))))
         await message.edit(
-            content="video prise a {}".format(time.strftime("%Hh %Mmin %Ssec")),
+            content=text["text"]["vidTaken"].format(time.strftime("%Hh %Mmin %Ssec")),
         )
     except:
-        await message.edit(content="", embed=makeEmbed(embedData["videoError"]))
+        await message.edit(content="", embed=makeEmbed(text["embed"]["videoError"]))
 
 
 @bot.command()
@@ -154,13 +153,13 @@ async def shell(ctx, *arg):
 @bot.command()
 async def state(ctx, *arg):
     """show state of all sensors"""
-    embed = makeEmbed(embedData["state"])
+    embed = makeEmbed(text["embed"]["state"])
     states = ""
     for elem in ils:
         states += "{} | {} {} \n".format(
             elem[2],
             "🟩" if elem[0].is_pressed == elem[1] else "🟥",
-            "close" if elem[0].is_pressed else "open",
+            text["text"]["close"] if elem[0].is_pressed else text["text"]["open"],
         )
     embed.description = f"```{states}```"
     await ctx.send(embed=embed)
@@ -179,11 +178,16 @@ async def checkDisk(channel, onlyIfLow=False):
             return
         else:
             sys.stdout.write("> disk space is low\n")
-            embed = makeEmbed(embedData["diskLow"])
+            embed = makeEmbed(text["embed"]["diskLow"])
     else:
-        embed = makeEmbed(embedData["disk"])
+        embed = makeEmbed(text["embed"]["disk"])
 
-    embed.description = f"```{disk.total / (1024 * 1024 * 1024):.2f} Go au total\n {disk.used / (1024 * 1024 * 1024):.2f} Go utilise\n {disk.free / (1024 * 1024 * 1024):.2f} Go libre\n {disk.free / disk.total * 100:.2f} % libre``` "
+    embed.description = text["text"]["disk"].format(
+        disk.total / (1024 * 1024 * 1024),
+        disk.used / (1024 * 1024 * 1024),
+        disk.free / (1024 * 1024 * 1024),
+        disk.free / disk.total * 100,
+    )
     await channel.send(embed=embed)
 
 
@@ -210,11 +214,12 @@ async def deleteOldCapture(channel, day, automatic=False):
         if automatic:
             return
         else:
-            await channel.send(embed=makeEmbed(embedData["deleteEmpty"]))
+            await channel.send(embed=makeEmbed(text["embed"]["deleteEmpty"]))
     else:
-        embed = makeEmbed(embedData["delete"])
-        embed.description = "liste des fichier supprime :  \n  ```{}```".format("\n".join(deletes))
+        embed = makeEmbed(text["embed"]["delete"])
+        embed.description = text["text"]["delete"].format("\n".join(deletes))
         await channel.send(embed=embed)
+
 
 # gpio setup
 @tasks.loop(seconds=0.5)

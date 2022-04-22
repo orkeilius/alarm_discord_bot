@@ -1,0 +1,81 @@
+{
+  "debug":{
+    "makeCapture": "dossier capture crée \n",
+    "saveImg": "> photo enregisté : {}\n",
+    "saveVid": "> vidéo enregisté : {}\n",
+    "sensorActivated": "> capteur \"{}\" active\n"
+  },
+  "text":{
+    "sensorActivated": "alert !  le capteur '{}' a detecter quelque chose \n a {}",
+    "imgTaken": "image prise a {}",
+    "record": "enregistrement en cours...",
+    "vidTaken": "vidéo prise a {}",
+    "open": "ouvert",
+    "close": "ferme",
+    "disk": "```{:.2f} Go au total\n {:.2f} Go utilise\n {:.2f} Go libre\n {:.2f} % libre```",
+    "delete": "liste des fichier supprime :  \n  ```{}```"
+  
+  },
+  "embed":{
+    "default": {
+      "title": "title",
+      "description": "description",
+      "color": [255, 255, 255],
+      "fields": [
+        {
+          "name": "name",
+          "description": "description",
+          "inline": false
+        }
+      ]
+    },
+    "start": {
+      "title": "Salut!",
+      "description": "le bot vient de demarrer",
+      "color": [0, 255, 0],
+      "fields": []
+    },
+    "reconnect": {
+      "title": "reconnect",
+      "description": "probleme de connexion au serveur discord",
+      "color": [255, 0, 0],
+      "fields": []
+    },
+    "videoError": {
+      "title": "Erreur",
+      "description": "vidéo trop grande pour discord",
+      "color": [255, 0, 0],
+      "fields": []
+    },
+    "state":{
+      "title": "Etat des capteurs :",
+      "description": "",
+      "color": [0, 0, 255],
+      "fields": []
+    },
+    "disk":{
+      "title": "Utilisation du disque :",
+      "description": "",
+      "color": [0, 0, 255],
+      "fields": []
+    },
+    "diskLow":{
+      "title": "Alert disque bientot plein :",
+      "description": "",
+      "color": [255, 0, 0],
+      "fields": []
+    },
+    "delete":{
+      "title": "Capture supprimee",
+      "description": "",
+      "color": [255, 0, 0],
+      "fields": []
+    },
+    "deleteEmpty":{
+      "title": "Aucun fichier correspondant",
+      "description": "Aucin fichier n'a ete supprime",
+      "color": [0, 0, 255],
+      "fields": []
+    }
+  }
+}

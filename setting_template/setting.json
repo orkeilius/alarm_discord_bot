@@ -2,7 +2,8 @@
    "global":{
        "prefix": "!",
        "description":"bot alarme, use !help",
-       "channel": *the channel id for the bot*
+       "channel": "the channel id for the bot",
+       "language": "FR_fr"
    },
    "alarm":{
        "ils":[
