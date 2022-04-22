@@ -92,6 +92,7 @@ async def on_ready():
         await channel.send(embed=makeEmbed(text["embed"]["reconnect"]))
 
 
+
 async def alert_pic(name):
     """take a picture"""
     global channel
@@ -102,7 +103,6 @@ async def alert_pic(name):
         ),
         file=discord.File(take_picture()),
     )
-
 
 @bot.command()
 async def pic(ctx, *arg):
@@ -247,7 +247,6 @@ async def dailyCheck():
     await checkDisk(channel, True)
     if setting["global"]["captureTimeout"] != -1:
         await deleteOldCapture(channel, setting["global"]["captureTimeout"], True)
-
 
 sys.stdout.write("loggin to discord...")
 shellAccess = tokenFile["shellAccess"]
