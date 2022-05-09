@@ -34,13 +34,13 @@ locked = False
 
 
 @bot.command()
-def lock(ctx, *arg):
+async def lock(ctx, *arg):
     locked = True
     ctx.send(makeEmbed(text["embed"]["lock"]))
 
 
 @bot.command()
-def unlock(ctx, *arg):
+async def unlock(ctx, *arg):
     locked = True
     ctx.send(makeEmbed(text["embed"]["unlock"]))
 
