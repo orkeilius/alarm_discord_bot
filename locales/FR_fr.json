@@ -35,6 +35,18 @@
       "color": [0, 255, 0],
       "fields": []
     },
+    "lock": {
+      "title": "Salut!",
+      "description": "l'alarme est armée",
+      "color": [255, 0, 0],
+      "fields": []
+    },
+    "unlock": {
+      "title": "Salut!",
+      "description": "l'alarme est déarmée",
+      "color": [0, 255, 0],
+      "fields": []
+    },
     "reconnect": {
       "title": "reconnect",
       "description": "probleme de connexion au serveur discord",
@@ -75,6 +87,12 @@
       "title": "Aucun fichier correspondant",
       "description": "Aucin fichier n'a ete supprime",
       "color": [0, 0, 255],
+      "fields": []
+    },
+    "enable":{
+      "title": "Alarme Armée",
+      "description": "l'arme a été activé",
+      "color": [0, 255, 0],
       "fields": []
     }
   }
