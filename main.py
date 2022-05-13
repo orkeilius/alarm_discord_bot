@@ -36,13 +36,13 @@ locked = False
 @bot.command()
 async def lock(ctx, *arg):
     locked = True
-    ctx.send(makeEmbed(text["embed"]["lock"]))
+    await ctx.send(embed=makeEmbed(text["embed"]["lock"]))
 
 
 @bot.command()
 async def unlock(ctx, *arg):
-    locked = True
-    ctx.send(makeEmbed(text["embed"]["unlock"]))
+    locked = False
+    await ctx.send(embed=makeEmbed(text["embed"]["unlock"]))
 
 
 def makeEmbed(file):
