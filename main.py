@@ -35,12 +35,14 @@ locked = False
 
 @bot.command()
 async def lock(ctx, *arg):
+    global locked
     locked = True
     await ctx.send(embed=makeEmbed(text["embed"]["lock"]))
 
 
 @bot.command()
 async def unlock(ctx, *arg):
+    global locked
     locked = False
     await ctx.send(embed=makeEmbed(text["embed"]["unlock"]))
 
