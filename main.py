@@ -30,6 +30,21 @@ bot = commands.Bot(
 
 camera = PiCamera()
 firstConnection = True
+locked = False
+
+
+@bot.command()
+async def lock(ctx, *arg):
+    global locked
+    locked = True
+    await ctx.send(embed=makeEmbed(text["embed"]["lock"]))
+
+
+@bot.command()
+async def unlock(ctx, *arg):
+    global locked
+    locked = False
+    await ctx.send(embed=makeEmbed(text["embed"]["unlock"]))
 
 
 def makeEmbed(file):
@@ -92,7 +107,6 @@ async def on_ready():
         await channel.send(embed=makeEmbed(text["embed"]["reconnect"]))
 
 
-
 async def alert_pic(name):
     """take a picture"""
     global channel
@@ -103,6 +117,7 @@ async def alert_pic(name):
         ),
         file=discord.File(take_picture()),
     )
+
 
 @bot.command()
 async def pic(ctx, *arg):
@@ -224,9 +239,10 @@ async def deleteOldCapture(channel, day, automatic=False):
 # gpio setup
 @tasks.loop(seconds=0.5)
 async def eventLoop():
-    for elem in ils:
-        if elem[0].is_pressed != elem[1]:
-            await alert_pic(elem[2])
+    if locked:
+        for elem in ils:
+            if elem[0].is_pressed != elem[1]:
+                await alert_pic(elem[2])
 
 
 def gpioInit():
@@ -247,6 +263,7 @@ async def dailyCheck():
     await checkDisk(channel, True)
     if setting["global"]["captureTimeout"] != -1:
         await deleteOldCapture(channel, setting["global"]["captureTimeout"], True)
+
 
 sys.stdout.write("loggin to discord...")
 shellAccess = tokenFile["shellAccess"]
