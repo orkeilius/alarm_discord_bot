@@ -28,6 +28,21 @@ bot = commands.Bot(
 
 camera = PiCamera()
 firstConnection = True
+locked = False
+
+
+@bot.command()
+async def lock(ctx, *arg):
+    global locked
+    locked = True
+    await ctx.send(embed=makeEmbed(text["embed"]["lock"]))
+
+
+@bot.command()
+async def unlock(ctx, *arg):
+    global locked
+    locked = False
+    await ctx.send(embed=makeEmbed(text["embed"]["unlock"]))
 
 
 def makeEmbed(file):
@@ -222,9 +237,10 @@ async def deleteOldCapture(channel, day, automatic=False):
 # gpio setup
 @tasks.loop(seconds=0.5)
 async def eventLoop():
-    for elem in ils:
-        if elem[0].is_pressed != elem[1]:
-            await alert_pic(elem[2])
+    if locked:
+        for elem in ils:
+            if elem[0].is_pressed != elem[1]:
+                await alert_pic(elem[2])
 
 
 def gpioInit():
